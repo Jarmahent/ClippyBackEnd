@@ -35,3 +35,18 @@ def CopyDataView(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@login_required
+def GenerateToken(request):
+    current_user = request.user
+    try:
+        generated_token = Token.objects.create(user=current_user)
+        return JsonResponse({
+            'auth_token': f'{generated_token.key}'
+        })
+    except Exception as e:
+        return JsonResponse({
+            "error": f"{e}",
+            "description": "This client already has a generated token..."
+        })
