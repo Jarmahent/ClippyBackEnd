@@ -5,12 +5,14 @@ from rest_framework import status
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from django.http import JsonResponse
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.core import serializers
+from json import loads
 
 
 
@@ -21,8 +23,8 @@ class CopyDataViewSet(viewsets.ModelViewSet):
 
 
 @api_view(['GET', 'POST'])
-# @authentication_classes((SessionAuthentication, BasicAuthentication))
-# @permission_classes((IsAuthenticated))
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticatedOrReadOnly,))
 def CopyDataView(request):
     if request.method == 'GET':
         query = CopyData.objects.all()
@@ -38,6 +40,7 @@ def CopyDataView(request):
 
 
 @login_required
+@api_view(['GET'])
 def GenerateToken(request):
     current_user = request.user
     try:
@@ -46,7 +49,13 @@ def GenerateToken(request):
             'auth_token': f'{generated_token.key}'
         })
     except Exception as e:
-        return JsonResponse({
+        existing_token = Token.objects.all().filter(user_id=current_user.id)
+        parsed_token = loads(serializers.serialize("json", existing_token))
+        key = parsed_token[0]["pk"]
+        return Response({
+
             "error": f"{e}",
-            "description": "This client already has a generated token..."
+            "description": "This client probably already has a generated token...",
+            "client_name": request.user.username,
+            "pregenerated_token": f"{key}"
         })
