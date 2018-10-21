@@ -2,9 +2,17 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from backend.serializers import CopyData, CopyDataSerializer
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authtoken.models import Token
+from django.http import JsonResponse
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
+
 
 class CopyDataViewSet(viewsets.ModelViewSet):
     queryset = CopyData.objects.all()
@@ -13,7 +21,8 @@ class CopyDataViewSet(viewsets.ModelViewSet):
 
 
 @api_view(['GET', 'POST'])
-
+# @authentication_classes((SessionAuthentication, BasicAuthentication))
+# @permission_classes((IsAuthenticated))
 def CopyDataView(request):
     if request.method == 'GET':
         query = CopyData.objects.all()

@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.db import models
+from rest_framework.authtoken.models import Token
 
 
 class CopyData(models.Model):
@@ -13,3 +14,7 @@ class CopyDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = CopyData
         fields = ('content', 'date', 'user')
+
+
+# for user in User.objects.all():
+#     Token.objects.get_or_create(user=user)
