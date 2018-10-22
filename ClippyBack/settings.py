@@ -122,7 +122,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+#REST FRAMEWORK SETTING
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
 }
+
+
+# LOGIN REQUIRED REDIRECT
+LOGIN_URL = "/api-authlogin/"
+LOGIN_REDIRECT_URL = "/api-authlogin/"
