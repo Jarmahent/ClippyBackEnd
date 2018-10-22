@@ -27,12 +27,15 @@ class CopyDataViewSet(viewsets.ModelViewSet):
 @permission_classes((IsAuthenticatedOrReadOnly,))
 def CopyDataView(request):
     if request.method == 'GET':
-        query = CopyData.objects.all()
+        query = CopyData.objects.all().filter(user_id=request.user.id)
+        print(request.user.id)
         serializer = CopyDataSerializer(query, many=True)
         return Response(serializer.data)
 
     if request.method == 'POST':
-        serializer = CopyDataSerializer(data=request.data)
+        mutable_dict = request.POST.copy()
+        mutable_dict['user'] = request.user.id
+        serializer = CopyDataSerializer(data=mutable_dict)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
