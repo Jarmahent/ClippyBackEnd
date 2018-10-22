@@ -4,4 +4,4 @@
     `Token.get_or_create` to create a new token when
     the end point is requested
 
--- 
+-- Figure out why login in with TokenAuthentication is a problem
