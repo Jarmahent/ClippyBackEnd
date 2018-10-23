@@ -12,6 +12,7 @@ from django.http import JsonResponse
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core import serializers
+from django.conf import settings
 from json import loads
 
 
@@ -19,6 +20,13 @@ from json import loads
 class CopyDataViewSet(viewsets.ModelViewSet):
     queryset = CopyData.objects.all()
     serializer_class = CopyDataSerializer
+
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL) # Automatically generates key
+def create_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 
 
@@ -46,19 +54,8 @@ def CopyDataView(request):
 @api_view(['GET'])
 def GenerateToken(request):
     current_user = request.user
-    try:
-        generated_token = Token.objects.create(user=current_user)
-        return JsonResponse({
-            'auth_token': f'{generated_token.key}'
-        })
-    except Exception as e:
-        existing_token = Token.objects.all().filter(user_id=current_user.id)
-        parsed_token = loads(serializers.serialize("json", existing_token))
-        key = parsed_token[0]["pk"]
-        return Response({
-
-            "error": f"{e}",
-            "description": "This client probably already has a generated token...",
-            "client_name": request.user.username,
-            "pregenerated_token": f"{key}"
-        })
+    generated_token = Token.objects.get_or_create(user=current_user)
+    print(generated_token)
+    return Response({
+        'auth_token': f'{generated_token[0]}'
+    })

@@ -4,7 +4,7 @@ from backend import views
 
 urlpatterns = [
     path('', views.CopyDataView, name="copydata"),
-    path('generate/', views.GenerateToken, name="generateToken")
+    path('token/', views.GenerateToken, name="generateToken")
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
