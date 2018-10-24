@@ -1,13 +1,12 @@
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIClient
 from rest_framework.test import force_authenticate
 from django.contrib.auth.models import User
+from rest_framework.test import RequestsClient
 from rest_framework.authtoken.models import Token
 from backend.serializers import CopyData
-from rest_framework.test import RequestsClient
-from json import dumps
-
+import json
 
 # Useless tests
 
@@ -21,13 +20,14 @@ class TestEndPoints(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_copyData_post(self):
-        client = RequestsClient()
-        user = User.objects.all().filter(username='admin')
-
-        response = client.post('http://testserver/copydata/', json={
-            'content': 'MegaCorp',
-            'date': 'datehere',
-            'user': 1
-        }, headers={'Authorization': 'Token 294dde275500d23b490cfbfc5ee5040aedff808e'})
-        force_authenticate(response, user=user)
+        user = User.objects.create_user('username', 'Pas$w0rd')
+        token = Token.objects.get(user__username='username')
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+        response = client.post('/copydata/', json={
+            'content': 'copy_data_here',
+            'date': 'date',
+            'user': '1'
+        })
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn("content", json.loads(response.content))

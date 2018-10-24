@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from backend.serializers import CopyData, CopyDataSerializer
 from rest_framework import status
@@ -6,14 +5,13 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.response import Response
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.authtoken.models import Token
 from django.http import JsonResponse
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core import serializers
 from django.conf import settings
-from json import loads
 
 
 
@@ -31,7 +29,7 @@ def create_token(sender, instance=None, created=False, **kwargs):
 
 
 @api_view(['GET', 'POST'])
-@authentication_classes((TokenAuthentication,))
+@authentication_classes((TokenAuthentication, SessionAuthentication))
 @permission_classes((IsAuthenticatedOrReadOnly,))
 def CopyDataView(request):
     if request.method == 'GET':

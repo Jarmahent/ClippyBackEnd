@@ -1,9 +1,14 @@
--- Have a copydata list per user ✅
+- [x] Have a copydata list per user
 
--- Probably switch from creating a new token to
+- [ ] Probably switch from creating a new token to
+
     `Token.get_or_create` to create a new token when
+    
     the end point is requested
 
--- Figure out why login in with TokenAuthentication is a problem
+- [x] Figure out why login in with TokenAuthentication is a problem
 
--- Have tokens generate automatically per new user ✅
+      // SessionAuthentication must be included in the authentication classes function
+
+
+- [x] Have tokens generate automatically per new user
