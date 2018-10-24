@@ -118,4 +118,4 @@ Vary: Accept
       // SessionAuthentication must be included in the authentication classes function
 
 
-- [x] Have tokens generate automatically per new user
+- [x] Have tokens generate automatically per new user **Added in: [here](https://github.com/Jarmahent/ClippyBackEnd/commit/4e1d0cb74da64fa8b591fb4a8f34e8437f9f90f4)
