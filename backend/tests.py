@@ -31,3 +31,12 @@ class TestEndPoints(APITestCase):
         })
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("content", json.loads(response.content))
+
+    def test_login(self):
+        user = User.objects.create_user('username', 'Pas$w0rd')
+        client = APIClient()
+        response = client.post('/api-authlogin/', json={
+            "username": "username",
+            "password": "Pas$w0rd"
+        })
+        self.assertEqual(response.status_code, 200)
