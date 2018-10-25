@@ -105,3 +105,17 @@ Vary: Accept
     "auth_token": "3db10d6fa452d894cdf57e121e995fb034c56733"
 }
 ```
+***
+
+## Todo
+
+- [x] Have a copydata list per user
+
+- [ ] Probably switch from creating a new token to `Token.get_or_create` to create a new token when <br/> the end point is requested
+
+- [x] Figure out why login in with TokenAuthentication is a problem
+
+      // SessionAuthentication must be included in the authentication classes function
+
+
+- [x] Have tokens generate automatically per new user // **Added in: [4e1d0cb](https://github.com/Jarmahent/ClippyBackEnd/commit/4e1d0cb74da64fa8b591fb4a8f34e8437f9f90f4)**
