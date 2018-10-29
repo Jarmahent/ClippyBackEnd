@@ -12,7 +12,8 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.core import serializers
 from django.conf import settings
-
+from json import loads
+from django.http import QueryDict
 
 
 class CopyDataViewSet(viewsets.ModelViewSet):
@@ -39,9 +40,13 @@ def CopyDataView(request):
         return Response(serializer.data)
 
     if request.method == 'POST':
-        mutable_dict = request.POST.copy()
-        mutable_dict['user'] = request.user.id
-        serializer = CopyDataSerializer(data=mutable_dict)
+        data = loads(request.body)
+        data['user'] = request.user.id
+        
+        qdict = QueryDict(mutable=True)
+        qdict.update(data)
+
+        serializer = CopyDataSerializer(data=qdict)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
