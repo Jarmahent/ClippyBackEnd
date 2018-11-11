@@ -134,3 +134,5 @@ REST_FRAMEWORK = {
 # LOGIN REQUIRED REDIRECT
 LOGIN_URL = "/api-authlogin/"
 LOGIN_REDIRECT_URL = "/api-authlogin/"
+
+STATIC_URL = '/static/'

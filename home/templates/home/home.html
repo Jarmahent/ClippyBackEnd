@@ -4,13 +4,87 @@
 <head>
      <meta charset="UTF-8">
      <title>Home</title>
+     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
+
      <meta name="description" content="home page">
-    <link rel="stylesheet" href="PATH">
+    <!-- <link rel="stylesheet" href="PATH"> -->
  </head>
 
 
  <body>
-   This is the home page for Clippy Backend
+   <style>
+    body{
+      margin: 0;
+    }
+
+    .navBar{
+      display: flex;
+      align-items: center;
+      height: 40px;
+      font-family: 'Open Sans', sans-serif;
+      justify-content: flex-end;
+      /* position: absolute; */
+      width: 100%;
+    }
+
+    .navBar a {
+      font-size: 30px;
+      transition: .3s ease;
+      color: black;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    .navBar a:hover{
+        color: #4ccbff;
+    }
+    .titleSection{
+      font-size: 65px;
+      text-align: center;
+      font-family: 'Rubik', sans-serif;
+      font-weight: bold;
+    }
+
+
+    .secondSection{
+      height: 100vh;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+    .pageItemContainer{
+      margin: 10px;
+      width: 200px;
+      height: 400px;
+      border-radius: 5px;
+      border-style: solid;
+    }
+   </style>
+
+
+
+   <header class="navBar">
+     <a href="/home">Home</a>
+     <a href="#">API</a>
+     <a href="#">Options</a>
+     {% if user.is_authenticated %}
+      <a href="#">Account</a>
+      {% else %}
+      <a href="/api-authlogin/">Login</a>
+     {% endif %}
+   </header>
+   <!-- <div class="titleSection">
+     <div>Clippy</div>
+   </div> -->
+   <div class="secondSection">
+     <div class="pageItemContainer"></div>
+     <div class="pageItemContainer"></div>
+     <div class="pageItemContainer"></div>
+     <div class="pageItemContainer"></div>
+     <div class="pageItemContainer"></div>
+   </div>
  </body>
 
  </html>
