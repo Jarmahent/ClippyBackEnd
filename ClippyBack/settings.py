@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'home',
     'rest_framework.authtoken',
     'backend',
     'rest_framework',

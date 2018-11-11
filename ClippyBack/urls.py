@@ -19,10 +19,13 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from backend import views
 
+
+
 router = routers.DefaultRouter()
 router.register('content', views.CopyDataViewSet)
 
 urlpatterns = [
+    path('home/', include('home.urls')),
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('copydata/', include('backend.urls')),
