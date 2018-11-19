@@ -7,7 +7,7 @@ from rest_framework.authtoken.models import Token
 class CopyData(models.Model):
     id = models.AutoField(primary_key=True)
     content = models.CharField(max_length=1000, default="")
-    date = models.CharField(max_length=20, default="nodate")
+    date = models.CharField(max_length=40, default="nodate")
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
 
 class CopyDataSerializer(serializers.ModelSerializer):
